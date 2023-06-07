@@ -1,0 +1,270 @@
+﻿<h1>Class Management</h1>
+<div style="display:flex; flex-direction: column;">
+    <label>Student Name</label><input type="text" id="txtStuName" />
+    <label>DOB</label><input type="date" id="dob" />
+    <label>Teacher Name</label><input type="text" id="txtTeacherName" />
+    <button style="width:200px; text-align:center" onclick="AddStudent()">Import Student</button>
+    <button style="width:200px; text-align:center" onclick="AddStudent3000()">Import Student 3000</button>
+</div>
+<div style="display:flex; width:100%">
+    <div style="flex-basis: 40%">
+        <h3>List student and teacher before </h3>
+        <div style="max-height:500px; overflow:auto">
+            <table id="reviewTable" style="width:100%">
+                <tr>
+                    <th>FullName</th>
+                    <th>DOB</th>
+                    <th>TeacherFullName</th>
+                </tr>
+
+            </table>
+        </div>
+
+        <button onclick="GetDataFromTable()">Submit</button>
+    </div>
+
+    <div style="flex-basis: 40%; margin-left : 20px">
+        <h3>List student and teacher after imported </h3>
+        <div style="max-height:500px; overflow:auto">
+            <table id="result" style="width:100%">
+                <tr>
+                    <th>#</th>
+                    <th>Teacher Name</th>
+                    <th>Student Name</th>
+                    <th>DOB</th>
+                </tr>
+            </table>
+        </div>
+
+        <button onclick="LoadTeacher()" id="btnGet" style="margin-bottom : 10px">Load Teachers List</button>
+    </div>
+
+
+</div>
+
+
+<script>
+    function LoadTeacher() {
+        const resultTable = document.getElementById('result');
+        while (resultTable.rows.length > 1) {
+            resultTable.deleteRow(1);
+        }
+        var btn = document.getElementById("btnGet");
+        btn.disabled = true;
+        $.ajax({
+            url: '/School/LoadTeachers',
+            type: 'GET',
+            async: true,
+            success: function (data) {
+                console.log(data)
+                let index = 1;
+                for (var i = 0; i < data.length; i++) {
+                    AppendTable(data[i], index)
+                    index++;
+                }
+                btn.disabled = false;
+            }
+        });
+    }
+    function GetDataFromTable() {
+        const resultTable = document.getElementById('result');
+        while (resultTable.rows.length > 1) {
+            resultTable.deleteRow(1);
+        }
+        var oTable = document.getElementById('reviewTable');
+        var rowLength = oTable.rows.length;
+        var reviewList = [];
+
+        for (i = 1; i < rowLength; i++) {
+            var oCells = oTable.rows.item(i).cells;
+            var cellLength = oCells.length;
+            var review = {};
+
+            for (var j = 0; j < cellLength; j++) {
+                var cellVal = oCells.item(j).innerHTML;
+                review[oTable.rows.item(0).cells.item(j).innerHTML] = cellVal;
+            }
+
+            reviewList.push(review);
+            console.log(reviewList);
+        }
+
+        $.ajax({
+            url: '/School/AddList',
+            type: 'POST',
+            async: true,
+            data: { request: reviewList },
+            success: function (data) {
+                if (data.status === false) {
+                    alert(data.message)
+                }
+                $.ajax({
+                    url: '/School/LoadTeachers',
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data)
+                        let index = 1;
+                        for (var i = 0; i < data.length; i++) {
+                            AppendTable(data[i], index)
+                            index++;
+                        }
+                    }
+                });
+
+                if (data.status === true) {
+                    const table = document.getElementById('reviewTable');
+                    while (table.rows.length > 1) {
+                        table.deleteRow(1);
+                    }
+                }
+            }
+        });
+    }
+
+    function AppendTable(reponse, index) {
+        var table = document.getElementById("result");
+
+        var row = table.insertRow(-1);
+
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(2);
+
+        cell1.innerHTML = index;
+        cell2.innerHTML = reponse.teacherName;
+        cell3.innerHTML = reponse.studentName;
+        cell4.innerHTML = reponse.dob;
+    }
+    function AddStudent() {
+        let table = document.getElementById("reviewTable");
+
+        let row = table.insertRow(-1);
+
+        let c1 = row.insertCell(0);
+        let c2 = row.insertCell(1);
+        let c3 = row.insertCell(2);
+
+        c1.innerText = document.getElementById('txtStuName').value;
+        c2.innerText = document.getElementById('dob').value;
+        c3.innerText = document.getElementById('txtTeacherName').value;
+    }
+
+    function AddStudent3000(){
+        const resultTable = document.getElementById('result');
+        while (resultTable.rows.length > 1) {
+            resultTable.deleteRow(1);
+        }
+        var btn = document.getElementById("btnGet");
+        btn.disabled = true;
+        $.ajax({
+            url: '/School/LoadTeachers3000',
+            type: 'GET',
+            async: true,
+            success: function (data) {
+                console.log(data)
+                    let index = 1;
+                    for (var i = 0; i < data.length; i++) {
+                    AppendTable(data[i], index)
+                        index++;
+                }
+                        btn.disabled = false;
+            }
+        });
+    }
+
+</script>
+
+<style>
+    .table {
+        border-collapse: unset;
+        width: 100%;
+        overflow: auto;
+        height: 100px
+    }
+
+    tbody, th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+        width: 100%;
+    }
+
+    th {
+        background-color: #000000;
+        color: white;
+        width: 40%;
+    }
+
+
+    input[type=text], input[type=password], input[type=email], input[type=number] {
+        width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 20px;
+    }
+
+    input[type=submit] {
+        background-color: #000000;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 50%;
+    }
+
+        input[type=submit]:hover {
+            background-color: #6c757d;
+        }
+
+    input[type=button] {
+        background-color: #008CBA;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 50%;
+    }
+
+        input[type=button]:hover {
+            background-color: #006CBA;
+        }
+
+    input[type=date] {
+        width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 20px;
+        font-size: 16px; /* set font-size for consistency */
+    }
+
+    button {
+        background-color: #000000;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        button:hover {
+            background-color: #5d6a76;
+        }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+</style>
