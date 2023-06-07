@@ -104,7 +104,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
                     var student = _studentRepository.SearchByNameExactly(item.FullName);
                     if (student is not null)
                     {
-                        if (!ChecksRelations(teacher.Id, student.Id))
+                        if (!CheckRelations(teacher.Id, student.Id))
                         {
                             crossRefs.Add(new CrossReferenceDto
                             {
@@ -142,7 +142,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
             await _crossReferenceRepository.AddListCrossReferenceAsync(_mapper.Map<List<CrossReference>>(referenceDtos));
         }
 
-        private bool ChecksRelations(Guid teacherId, Guid studentId)
+        private bool CheckRelations(Guid teacherId, Guid studentId)
         {
             return _crossReferenceRepository.CheckExistedRelation(teacherId, studentId);
         }
