@@ -147,6 +147,4 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
             return _crossReferenceRepository.CheckExistedRelation(teacherId, studentId);
         }
     }
-
-
 }
