@@ -118,7 +118,7 @@ namespace InterviewMS.Controllers
                     });
                 }
             }
-            return result;
+            return result.OrderBy(x =>  x.TeacherName).ThenBy(x => x.DOB).ToList();
         }
     }
 }
