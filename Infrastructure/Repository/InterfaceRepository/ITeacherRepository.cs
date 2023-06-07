@@ -6,7 +6,7 @@ namespace Infrastructure.Repository.InterfaceRepository
     {
         Task AddTeacherListAsync(List<Teacher> teachers);
 
-        Task AddTeacherAsync(Teacher teacher);
+        Task AddteacherAsync(Teacher teacher);
 
         Task Remove(Guid id);
 

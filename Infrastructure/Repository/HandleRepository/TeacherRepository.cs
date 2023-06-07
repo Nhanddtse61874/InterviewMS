@@ -21,7 +21,7 @@ namespace Infrastructure.Repository.HandleRepository
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddTeacherAsync(Teacher teacher)
+        public async Task AddteacherAsync(Teacher teacher)
         {
             await _dbSet.AddAsync(teacher);
             await _context.SaveChangesAsync();

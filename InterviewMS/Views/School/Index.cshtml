@@ -4,9 +4,15 @@
     <label>DOB</label><input type="date" id="dob" />
     <label>Teacher Name</label><input type="text" id="txtTeacherName" />
     <button style="width:200px; text-align:center; margin-left : 30px" onclick="AddStudent()">Import Student</button>
-    <button style="width:200px; text-align:center" onclick="AddStudent3000()">Import Student 3000</button>
+    <button style="width:200px; text-align:center; margin-left : 30px; margin-bottom: 50px" onclick="AddStudent3000()">Import Student 3000</button>
+    <div style=" margin-left : 30px" ">
+        <label>Filter (Student Name)</label><input placeholder="student name" type="text" id="txtSearchName" />
+        <button style="width:200px; text-align:center;" onclick="Search()">Search</button>
+    </div>
+    
 </div>
 <div style="display:flex; width:100%">
+    
     <div style="flex-basis: 40%">
         <h3>List student and teacher before </h3>
         <div style="max-height:500px; overflow:auto">
@@ -30,8 +36,8 @@
                 <tr>
                     <th>#</th>
                     <th>Teacher Name</th>
-                    <th>Student Name</th>
                     <th>DOB</th>
+                    <th>Student Name</th>
                 </tr>
             </table>
         </div>
@@ -44,6 +50,30 @@
 
 
 <script>
+    function Search(){
+        let name = document.getElementById('txtSearchName').value;
+        const resultTable = document.getElementById('result');
+        while (resultTable.rows.length > 1) {
+            resultTable.deleteRow(1);
+        }
+        var btn = document.getElementById("btnGet");
+        btn.disabled = true;
+        $.ajax({
+            url: '/School/SearchStudents?name='+name,
+            type: 'GET',
+            async: true,
+            success: function (data) {
+                console.log(data)
+                let index = 1;
+                for (var i = 0; i < data.length; i++) {
+                    AppendTable(data[i], index)
+                    index++;
+                }
+                btn.disabled = false;
+            }
+        });
+    }
+
     function LoadTeacher() {
         const resultTable = document.getElementById('result');
         while (resultTable.rows.length > 1) {

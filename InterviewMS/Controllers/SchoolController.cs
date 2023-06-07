@@ -58,6 +58,36 @@ namespace InterviewMS.Controllers
             return result;
         }
 
+        [HttpGet]
+        public List<LoadTeacherResponse> SearchStudents(string name)
+        {
+            try
+            {
+                if (name is null)
+                    throw new Exception("filter is null");
+                var result = new List<LoadTeacherResponse>();
+                var students = _schoolLogicHandler.SearchByName(name);
+                foreach (var student in students)
+                {
+                    foreach (var crossRef in student.CrossReferences)
+                    {
+                        result.Add(new LoadTeacherResponse
+                        {
+                            TeacherName = crossRef.Teacher.FullName,
+                            StudentName = student.FullName,
+                            DOB = student.DOB
+                        });
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
+
 
         [HttpGet]
         public async Task<List<LoadTeacherResponse>> LoadTeachers3000()

@@ -10,7 +10,8 @@ namespace HandleLogicService.Dto
 
         public Guid TeacherId { get; set; }
 
-        public Student Student { get; set; }
+        public StudentDto Student { get; set; }
 
+        public TeacherDto Teacher { get; set; }
     }
 }

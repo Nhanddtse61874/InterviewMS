@@ -37,7 +37,11 @@ namespace Infrastructure.Repository.HandleRepository
         }
 
         public List<Student> SearchByName(string name)
-        => _dbSet.Where(x => x.FullName.Contains(name)).OrderBy(y => y.DOB).ToList();
+        => _dbSet.Where(x => x.FullName.Contains(name))
+            .Include(x => x.CrossReferences)
+            .ThenInclude(y => y.Teacher)
+            .OrderBy(y => y.DOB)
+            .ToList();
 
         public Student SearchByNameExactly(string name)
         => _dbSet.FirstOrDefault(x => x.FullName == name);

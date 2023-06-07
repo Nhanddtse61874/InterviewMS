@@ -30,7 +30,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
                 throw new Exception("request is null");
 
 
-            if (request.Select(x => x.FullName).Distinct().Count() < 3)
+            if (request.Select(x => x.FullName).Distinct().Count() < 10)
                 throw new Exception("Student have to more than 10");
 
             if (request.Select(x => x.TeacherFullName).Distinct().Count() < 2)
@@ -145,6 +145,11 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
         private bool CheckRelations(Guid teacherId, Guid studentId)
         {
             return _crossReferenceRepository.CheckExistedRelation(teacherId, studentId);
+        }
+
+        public List<StudentDto> SearchByName(string name)
+        {
+            return _mapper.Map<List<StudentDto>>(_studentRepository.SearchByName(name));
         }
     }
 }

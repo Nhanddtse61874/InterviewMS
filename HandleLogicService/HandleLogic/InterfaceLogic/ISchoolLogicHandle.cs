@@ -9,5 +9,7 @@ namespace HandleLogicService.HandleLogic.InterfaceLogic
         Task AddListData3000(List<AddedStudentRequestDto> request);
 
         List<TeacherDto> LoadTeachers();
+
+        List<StudentDto> SearchByName(string name);
     }
 }

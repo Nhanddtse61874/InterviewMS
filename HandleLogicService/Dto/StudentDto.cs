@@ -8,5 +8,6 @@
 
         public DateTime DOB { get; set; }
 
+        public List<CrossReferenceDto> CrossReferences { get; set; }
     }
 }
