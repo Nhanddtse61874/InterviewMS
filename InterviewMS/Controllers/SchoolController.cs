@@ -4,8 +4,6 @@ using HandleLogicService.HandleLogic.InterfaceLogic;
 using InterviewMS.Models;
 using InterviewMS.Models.Request;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 
 namespace InterviewMS.Controllers
 {
@@ -28,7 +26,7 @@ namespace InterviewMS.Controllers
         public async Task<Response> AddList(List<AddedStudentRequest> request)
         {
             if (request is null)
-                return new Response { Message = "Success", Status = false };
+                return new Response { Message = "Request is null", Status = false };
             try
             {
                 await _schoolLogicHandler.AddListData(_mapper.Map<List<AddedStudentRequestDto>>(request));
