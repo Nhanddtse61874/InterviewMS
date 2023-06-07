@@ -9,7 +9,7 @@ namespace Infrastructure.Repository.InterfaceRepository
 {
     public interface ITeacherRepository
     {
-        Task AddteacherListAsync(List<Teacher> teachers);
+        Task AddTeacherListAsync(List<Teacher> teachers);
 
         Task AddteacherAsync(Teacher teacher);
 

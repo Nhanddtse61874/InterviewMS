@@ -20,7 +20,7 @@ namespace Infrastructure.Repository.HandleRepository
             _dbSet = _context.Teacher;
         }
 
-        public async Task AddteacherListAsync(List<Teacher> teachers)
+        public async Task AddTeacherListAsync(List<Teacher> teachers)
         {
             await _dbSet.AddRangeAsync(teachers);
             await _context.SaveChangesAsync();

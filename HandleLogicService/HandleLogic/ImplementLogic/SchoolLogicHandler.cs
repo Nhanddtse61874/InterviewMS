@@ -30,7 +30,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
                 throw new Exception("request is null");
 
 
-            if (request.Select(x => x.FullName).Distinct().Count() < 10)
+            if (request.Select(x => x.FullName).Distinct().Count() < 3)
                 throw new Exception("Student have to more than 10");
 
             if (request.Select(x => x.TeacherFullName).Distinct().Count() < 2)
@@ -86,7 +86,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
                     newTeacher.Add(teacherDto);
                 }
             }
-            await _teacherRepository.AddteacherListAsync(_mapper.Map<List<Teacher>>(newTeacher));
+            await _teacherRepository.AddTeacherListAsync(_mapper.Map<List<Teacher>>(newTeacher));
             return values;
         }
 
@@ -109,7 +109,7 @@ namespace HandleLogicService.HandleLogic.ImplementLogic
                             crossRefs.Add(new CrossReferenceDto
                             {
                                 StudentId = student.Id,
-                                TeacherId = student.Id,
+                                TeacherId = teacher.Id,
                                 Id = Guid.NewGuid()
                             });
                         }
